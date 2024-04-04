@@ -12,7 +12,8 @@ class Event(models.Model):
     date = models.DateTimeField()
     location = models.CharField(max_length=255)
     organizer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
+    image=models.ImageField(upload_to='images/', default="freepic.com")
+    video = models.FileField(upload_to='videos/', default="freepic.com")
     def __str__(self):
         return self.title
 

@@ -8,7 +8,7 @@ class EventMediaView(viewsets.ModelViewSet):
     serializer_class = EventMedia
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    def perform_create(self, request, *args, **kwargs):
+    def perform_create(self,serializer):
         serializer.save(event=self.request.user)
         
         
@@ -18,7 +18,7 @@ class BlogMediaView(viewsets.ModelViewSet):
     serializer_class = BlogMedia
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    def perform_create(self, request, *args, **kwargs):
+    def perform_create(self,serializer, request, *args, **kwargs):
         serializer.save(blog=self.request.user)
         
         
@@ -27,5 +27,5 @@ class ProfilePicView(viewsets.ModelViewSet):
     serializer_class = ProfilePic
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    def perform_create(self, request, *args, **kwargs):
+    def perform_create(self,serializer, request, *args, **kwargs):
         serializer.save(User=self.request.user)
