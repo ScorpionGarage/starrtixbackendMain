@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env(env_file='starrtixbackend/.env.local')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,12 +97,12 @@ WSGI_APPLICATION = 'starrtixbackend.wsgi.application'
 
 DATABASES = {
     'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'startixDb',
-        'USER': 'postgres',
-        'PASSWORD': 'RosieDore123@',
-        'HOST': 'localhost',
-        'PORT': '5432',
+       'ENGINE': env('DJANGO_DB_ENGINE'),
+        'NAME': env('DJANGO_DB_NAME'),
+        'USER': env('DJANGO_DB_USER'),
+        'PASSWORD': env('DJANGO_DB_PASSWORD'),
+        'HOST': env('DJANGO_DB_HOST'),
+        'PORT': env('DJANGO_DB_PORT'),
     }
 }
 

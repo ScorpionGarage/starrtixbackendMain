@@ -21,3 +21,12 @@ class RegisterSerializer(serializers.ModelSerializer):
             date_of_birth=validated_data['date_of_birth']
         )
         return user
+        def update(self, instance, validated_data):
+             instance.email = validated_data.get('email', instance.email)
+             instance.first_name = validated_data.get('first_name', instance.first_name)
+             instance.last_name = validated_data.get('last_name', instance.last_name)
+        # Handle password update with care
+             if validated_data.get('password'):
+                 instance.set_password(validated_data['password'])
+             instance.save()
+             return instance
