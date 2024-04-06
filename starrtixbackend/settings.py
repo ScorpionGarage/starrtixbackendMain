@@ -14,22 +14,26 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env(env_file='starrtixbackend/.env.local')
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Initialise environment variables
+env = environ.Env()
+env_path = BASE_DIR / 'starrtixbackend'/ '.env'
+environ.Env.read_env(env_file=env_path, overwrite=True)
+
+
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n-@wj7u2f&)-d9s=#frn^ru@2jb-4zkd^_8@qm2oyd8oi&ccem'
-
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+ENVIRONMENT = env("ENVIRONMENT")
 
 ALLOWED_HOSTS = []
 
@@ -95,18 +99,36 @@ WSGI_APPLICATION = 'starrtixbackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-       'ENGINE': env('DJANGO_DB_ENGINE'),
-        'NAME': env('DJANGO_DB_NAME'),
-        'USER': env('DJANGO_DB_USER'),
-        'PASSWORD': env('DJANGO_DB_PASSWORD'),
-        'HOST': env('DJANGO_DB_HOST'),
-        'PORT': env('DJANGO_DB_PORT'),
+if ENVIRONMENT == 'development':
+    
+    DATABASES = {
+        'default': {
+        'ENGINE': "django.db.backends.sqlite3",
+        'NAME': "db.sqlite3"
+        }
     }
-}
-
-
+else:
+    DATABASES = {
+        'default': {
+        'ENGINE': env('DJANGO_DB_ENGINE'),
+            'NAME': env('DJANGO_DB_NAME'),
+            'USER': env('DJANGO_DB_USER'),
+            'PASSWORD': env('DJANGO_DB_PASSWORD'),
+            'HOST': env('DJANGO_DB_HOST'),
+            'PORT': env('DJANGO_DB_PORT'),
+        }
+    }
+try:
+    from django.db import connections
+    connection = connections['default']
+    connection.connect()
+    print("Database connected Successfully")
+    
+except Exception as e:
+    print(f"Error connecting to database: {e}")
+    
+    
+    
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

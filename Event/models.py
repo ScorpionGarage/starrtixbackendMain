@@ -7,7 +7,7 @@ class Event(models.Model):
     event=models.TimeField()
     eventstarttime= models.TimeField()
     eventendtime=models.TimeField()
-    eventtags=models.CharField()
+    eventtags=models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateTimeField()
     location = models.CharField(max_length=255)
