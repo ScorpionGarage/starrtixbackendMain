@@ -1,0 +1,35 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: ["build-and-push-images"]
+    types:
+      - completed
+
+env:
+  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
+  DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+  ENV: "production"
+
+jobs:
+  deploy:
+    runs-on: ["self-hosted", "imotechsl-apps"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Stop running container
+        run: docker stop asset-app-production || true
+
+      - name: Remove application running container
+        run: docker rm -f asset-app-production || true
+
+      - name: Remove cached images
+        run: docker rmi imotechsl/asset-app:production || true
+
+      - name: Copy application env
+        run: cp ~/.env.asset ./config/.env.production
+
+      - name: Run production
+        run: make run-prod
