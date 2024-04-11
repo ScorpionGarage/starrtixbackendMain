@@ -35,7 +35,6 @@ services:
     networks:
       - starrtix-net
       - kenecare-net
-      - mysql-db-network
 
 volumes:
   starrtix-data:
@@ -45,11 +44,7 @@ networks:
   starrtix-net:
     name: starrtix-net
     driver: bridge
-  mysql-db-network:
-    name: mysql-db-network
-    driver: bridge
-    external: true
   kenecare-net:
     name: kenecare-net
-    driver: bridge
+    # driver: bridge
     external: true
