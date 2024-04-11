@@ -9,3 +9,10 @@ build-dev:
 	@docker build -f Dockerfile.dev -t rolandeke/starrtix-api:dev-1.0.0 .
 run-dev:
 	@docker run --name starrtix -p8000:8000 rolandeke/starrtix-api:dev-1.0.0
+
+build-prod:
+	@docker build -f Dockerfile.prod -t rolandeke/starrtix-api:prod-1.0.0 .
+run-prod:
+	@ENV=production docker compose --env-file=./starrtixbackend/.env -f docker-compose-prod.yml up -d
+
+

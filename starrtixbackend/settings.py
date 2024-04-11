@@ -16,7 +16,7 @@ DEBUG = True
 
 ENVIRONMENT = env("ENVIRONMENT")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

@@ -1,0 +1,55 @@
+version: "3.9"
+
+services:
+  app:
+    image: rolandeke/starrtix-api:prod-1.0.0
+    restart: always
+    container_name: starrtix-api-${ENV}
+    command: >
+      sh -c "python manage.py makemigrations User
+             python manage.py makemigrations Event
+             python manage.py makemigrations blog
+             python manage.py migrate User 
+             python manage.py migrate Event
+             python manage.py migrate blog
+             python manage.py migrate
+             python manage.py collectstatic --skip-checks
+             python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
+             gunicorn starrtixbackend.wsgi:application --bind 0.0.0.0:8000"
+    env_file:
+      - ./starrtixbackend/.env
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DEBUG=${DEBUG}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - DJANGO_DB_ENGINE=${DJANGO_DB_ENGINE}
+      - DJANGO_DB_NAME=${DJANGO_DB_NAME}
+      - DJANGO_DB_USER=${DJANGO_DB_USER}
+      - DJANGO_DB_PASSWORD=${DJANGO_DB_PASSWORD}
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=${DJANGO_DB_PORT}
+    volumes:
+      - starrtix-data:/app/staticfiles
+    ports:
+      - ${DJANGO_APP_PORT}:${DJANGO_APP_PORT}
+    networks:
+      - starrtix-net
+      - kenecare-net
+      - mysql-db-network
+
+volumes:
+  starrtix-data:
+    name: starrtix-data
+
+networks:
+  starrtix-net:
+    name: starrtix-net
+    driver: bridge
+  mysql-db-network:
+    name: mysql-db-network
+    driver: bridge
+    external: true
+  kenecare-net:
+    name: kenecare-net
+    driver: bridge
+    external: true
