@@ -12,6 +12,8 @@ run-dev:
 
 build-prod:
 	@docker build -f Dockerfile.prod -t rolandeke/starrtix-api:production .
+push-prod-images:
+	@docker push rolandeke/starrtix-api:production
 run-prod:
 	@ENV=production docker compose --env-file=./starrtixbackend/.env -f docker-compose-prod.yml up -d
 stop-prod:
