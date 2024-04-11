@@ -29,7 +29,7 @@ jobs:
         run: docker rmi rolandeke/startix-api:production || true
 
       - name: Copy application env
-        run: cp ~/.env.starrtix ./starrticbackend/.env
+        run: cp ~/.env.starrtix ./starrtixbackend/.env
 
       - name: Run production
         run: make run-prod
