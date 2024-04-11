@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'Event',
     'blog',
         'corsheaders',
-        'media'
+        'media',
+        'public_events'
 ]
 
 REST_FRAMEWORK = {

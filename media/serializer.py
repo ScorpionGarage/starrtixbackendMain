@@ -17,6 +17,6 @@ class EventMedia(serializers.ModelSerializer):
         
 class ProfilePic(serializers.ModelSerializer):
     class Meta:
-        model = eventMedia
+        model = profilePicture
         fields ='__all__'
         read_only_fields = ('User',)

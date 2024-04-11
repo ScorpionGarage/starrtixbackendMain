@@ -47,6 +47,7 @@ class Booking(models.Model):
     event=models.ForeignKey(Event, on_delete=models.CASCADE)
     name=models.CharField(max_length=100)
     email= models.EmailField()
+    phonenumber = models.CharField(max_length=20, blank=True, null=True)
     booked_on= models.DateTimeField(auto_now_add=True)
     unique_id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     qrcode= models.ImageField(upload_to='qrcodes/', blank=True, null=True)
