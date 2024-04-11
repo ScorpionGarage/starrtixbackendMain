@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   app:
-    image: rolandeke/starrtix-api:prod-1.0.0
+    image: rolandeke/starrtix-api:production
     restart: always
     container_name: starrtix-api-${ENV}
     command: >

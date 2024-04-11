@@ -13,23 +13,23 @@ env:
 
 jobs:
   deploy:
-    runs-on: ["self-hosted", "imotechsl-apps"]
+    runs-on: ["self-hosted", "scorpion-garage"]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Stop running container
-        run: docker stop asset-app-production || true
+        run: docker stop startix-api-production || true
 
       - name: Remove application running container
-        run: docker rm -f asset-app-production || true
+        run: docker rm -f startix-api-production || true
 
       - name: Remove cached images
-        run: docker rmi imotechsl/asset-app:production || true
+        run: docker rmi rolandeke/startix-api:production || true
 
       - name: Copy application env
-        run: cp ~/.env.asset ./config/.env.production
+        run: cp ~/.env.starrtix ./starrticbackend/.env
 
       - name: Run production
         run: make run-prod
