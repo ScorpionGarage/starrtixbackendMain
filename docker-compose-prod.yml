@@ -34,7 +34,7 @@ services:
       - ${DJANGO_APP_PORT}:${DJANGO_APP_PORT}
     networks:
       - starrtix-net
-      - kenecare-net
+      - ovp-net
 
 volumes:
   starrtix-data:
@@ -44,7 +44,6 @@ networks:
   starrtix-net:
     name: starrtix-net
     driver: bridge
-  kenecare-net:
-    name: kenecare-net
-    # driver: bridge
+  ovp-net:
+    name: ovp-net
     external: true
