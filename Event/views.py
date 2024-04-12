@@ -3,8 +3,12 @@ from .models import Event, ticket, Booking
 from .serializer import EventSerializer, ticketSerializer, BookingSerializer
 from rest_framework.response import Response
 import qrcode
+from uuid import UUID
+from django.shortcuts import get_object_or_404
 from io import BytesIO
 from django.core.files import File
+from rest_framework.decorators import action
+
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -62,4 +66,17 @@ class BookingViewset(viewsets.ModelViewSet):
                 return Response({'error': 'Not enough tickets available'}, status=status.HTTP_400_BAD_REQUEST)
         except tickets.DoesNotExist:
             return Response({'error': 'No ticket available for this event'}, status=status.HTTP_400_BAD_REQUEST)
-   
+    @action(detail=False, methods=['get'], url_path='by-unique-id/(?P<unique_id>[^/.]+)')
+    def get_by_unique_id(self, request, unique_id=None):
+        """
+        Retrieve a booking by its unique ID.
+        """
+        try:
+            # Validate that the unique_id is a valid UUID
+            uuid_obj = UUID(unique_id, version=4)
+        except ValueError:
+            return Response({"error": "Invalid UUID format"}, status=status.HTTP_400_BAD_REQUEST)
+
+        booking = get_object_or_404(Booking, unique_id=uuid_obj)
+        serializer = self.get_serializer(booking)
+        return Response(serializer.data)
