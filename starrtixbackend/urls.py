@@ -9,4 +9,5 @@ urlpatterns = [
     path('auth/', include('User.urls')),
     path('event/', include('Event.urls')),
     path('pic/', include('media.urls')),
+    path('public/', include('public_events.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

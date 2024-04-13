@@ -27,5 +27,15 @@ class ProfilePicView(viewsets.ModelViewSet):
     serializer_class = ProfilePic
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-    def perform_create(self,serializer, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):
+
+     # Check if the current user already has a profile picture
+        if ProfilePicture.objects.filter(User=request.user).exists():
+            return Response({
+                'message': 'Profile picture already exists. You can update or delete your existing profile picture.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Proceed with the normal creation process if no existing profile picture is found
+        return super(ProfilePicView, self).create(request, *args, **kwargs)
+    def perform_create(self,serializer):
         serializer.save(User=self.request.user)
