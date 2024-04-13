@@ -150,11 +150,9 @@ SIMPLE_JWT = {
     # Add any other custom settings here
 }
 CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:3000",
-    "http://127.0.0.1:9000",
+    "http://starrtix.com",
+    "http://api.starrtix.com",
+    
 ]
 
 MEDIA_ROOT = BASE_DIR/'media'
