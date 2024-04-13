@@ -20,13 +20,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Stop running container
-        run: docker stop startix-api-production || true
+        run: docker stop starrtix-api-production || true
 
       - name: Remove application running container
-        run: docker rm -f startix-api-production || true
+        run: docker rm -f starrtix-api-production || true
 
       - name: Remove cached images
-        run: docker rmi rolandeke/startix-api:production || true
+        run: docker rmi rolandeke/starrtix-api:production || true
 
       - name: Copy application env
         run: cp ~/.env.starrtix ./starrtixbackend/.env
