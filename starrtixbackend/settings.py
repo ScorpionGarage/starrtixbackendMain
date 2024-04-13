@@ -152,6 +152,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://starrtix.com",
     "http://api.starrtix.com",
+    "http://localhost:3000",
     
 ]
 
