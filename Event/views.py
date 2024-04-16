@@ -64,7 +64,7 @@ class BookingViewset(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
             else:
                 return Response({'error': 'Not enough tickets available'}, status=status.HTTP_400_BAD_REQUEST)
-        except tickets.DoesNotExist:
+        except ticket.DoesNotExist:
             return Response({'error': 'No ticket available for this event'}, status=status.HTTP_400_BAD_REQUEST)
     @action(detail=False, methods=['get'], url_path='by-unique-id/(?P<unique_id>[^/.]+)')
     def get_by_unique_id(self, request, unique_id=None):

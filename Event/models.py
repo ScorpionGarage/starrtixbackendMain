@@ -71,6 +71,7 @@ class invitation(models.Model):
            self.qrcode.save(fname, File(buffer), save=False)
 
            super().save(*args, **kwargs)
+      
     
 # booking
 class Booking(models.Model):
