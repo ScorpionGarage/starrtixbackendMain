@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, ticket,Booking
+from .models import Event, ticket,Booking,invitation
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,10 @@ class BookingSerializer(serializers.ModelSerializer):
             if value<=0:
                 raise serializers.ValidationError("Number of tickets should be a positive")
             return value
+class InvitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=invitation
+        fields='__all__'
+        read_only_fields=['unique_id', 'qrcode' ]
+        
+    

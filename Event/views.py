@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions, status
-from .models import Event, ticket, Booking
-from .serializer import EventSerializer, ticketSerializer, BookingSerializer
+from .models import Event, ticket, Booking,invitation
+from .serializer import EventSerializer, ticketSerializer, BookingSerializer,InvitationSerializer
 from rest_framework.response import Response
 import qrcode
 from uuid import UUID
@@ -79,4 +79,35 @@ class BookingViewset(viewsets.ModelViewSet):
 
         booking = get_object_or_404(Booking, unique_id=uuid_obj)
         serializer = self.get_serializer(booking)
+        return Response(serializer.data)
+
+
+# invitaion viewset
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user == request.user
+
+class InvitationViewset(viewsets.ModelViewSet):
+    serializer_class = InvitationSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        event_id = self.kwargs.get('event_id')
+        return invitation.objects.filter(event_id=event_id)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def retrieve_by_unique_id(self, request, unique_id=None):
+        Invitation = get_object_or_404(invitation, unique_id=unique_id)
+        serializer = self.get_serializer(Invitation)
         return Response(serializer.data)
