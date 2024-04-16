@@ -10,4 +10,5 @@ urlpatterns = [
     path('event/', include('Event.urls')),
     path('pic/', include('media.urls')),
     path('public/', include('public_events.urls')),
+    path('blog/', include('blog.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
