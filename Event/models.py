@@ -4,6 +4,7 @@ import uuid
 import qrcode
 from io import BytesIO
 from django.core.files import File
+import secrets
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
@@ -49,11 +50,13 @@ class invitation(models.Model):
         numberofinvitaion= models.IntegerField()
         uniqueIdentidier =  models.CharField(max_length=20, blank=True, null=True)
         email= models.EmailField()
-        unique_id=models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+        unique_id = models.CharField(max_length=4, editable=False, unique=True)  # Updated field type
         qrcode= models.ImageField(upload_to='qrcodes/', blank=True, null=True)
         event=models.ForeignKey(Event, on_delete=models.CASCADE)
 
         def save(self, *args, **kwargs):
+           self.unique_id = secrets.token_urlsafe(3)[:4]  # Generate a new 4-character string
+
            qr = qrcode.QRCode(
               version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,

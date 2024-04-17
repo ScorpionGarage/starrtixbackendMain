@@ -64,7 +64,7 @@ class BookingViewset(viewsets.ModelViewSet):
                 return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
             else:
                 return Response({'error': 'Not enough tickets available'}, status=status.HTTP_400_BAD_REQUEST)
-        except ticket.DoesNotExist:
+        except tickets.DoesNotExist:
             return Response({'error': 'No ticket available for this event'}, status=status.HTTP_400_BAD_REQUEST)
     @action(detail=False, methods=['get'], url_path='by-unique-id/(?P<unique_id>[^/.]+)')
     def get_by_unique_id(self, request, unique_id=None):
@@ -97,6 +97,14 @@ class InvitationViewset(viewsets.ModelViewSet):
     serializer_class = InvitationSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
+    
+    def get_permissions(self):
+        # Customizing permission classes based on action
+        if self.action == 'retrieve_by_unique_id':
+            permission_classes = []  # No authentication required for this action
+        else:
+            permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+        return [permission() for permission in permission_classes]
     def get_queryset(self):
         event_id = self.kwargs.get('event_id')
         return invitation.objects.filter(event_id=event_id)
@@ -107,6 +115,7 @@ class InvitationViewset(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+    @action(detail=False, methods=['get'], url_path='by-unique-id/(?P<unique_id>[^/.]+)')
     def retrieve_by_unique_id(self, request, unique_id=None):
         Invitation = get_object_or_404(invitation, unique_id=unique_id)
         serializer = self.get_serializer(Invitation)
