@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import environ
+import os
 
 # Initialise environment variables
 env = environ.Env()
@@ -165,3 +166,5 @@ CORS_ALLOWED_ORIGINS = [
 
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
