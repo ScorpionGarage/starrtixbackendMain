@@ -6,7 +6,7 @@ migrate:
 	@python3 manage.py migrate
 
 build-dev:
-	@docker build -f Dockerfile.dev -t rolandeke/starrtix-api:dev-1.0.0 .
+	@docker build -f Dockerfile.dev -t rolandeke/starrtix-api:dev-1.0.1 .
 
 run-dev:
 	@ENV=development docker compose --env-file=./starrtixbackend/.env.development -f docker-compose-dev.yml up --build

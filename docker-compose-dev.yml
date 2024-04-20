@@ -37,7 +37,8 @@ services:
       - ${DJANGO_APP_PORT}:${DJANGO_APP_PORT}
     networks:
       - starrtix-net
-      - ovp-net
+      - mysql-db-network
+      - kenecare-net
 
 volumes:
   starrtix-data-dev:
@@ -47,6 +48,7 @@ networks:
   starrtix-net:
     name: starrtix-net
     driver: bridge
-  ovp-net:
-    name: ovp-net
+  mysql-db-network:
+    external: true
+  kenecare-net:
     external: true

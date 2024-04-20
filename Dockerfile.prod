@@ -37,19 +37,6 @@ COPY . .
 
 RUN chown -R starrtix:starrtix /app
 
-# FROM python:3.9.18-slim-bullseye AS final
-
-# ENV PIP_DISABLE_PIP_VERSION_CHECK 1
-# ENV PYTHONUNBUFFERED 1
-# ENV PYTHONDONTWRITEBYTECODE 1
-
-# RUN adduser --disabled-password --gecos '' starrtix
-
-# WORKDIR /app
-
-# COPY --from=builder --chown=starrtix:starrtix /app /app
-
-# RUN chown -R starrtix:starrtix /app
 
 USER starrtix
 

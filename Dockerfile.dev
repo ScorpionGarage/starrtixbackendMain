@@ -4,23 +4,47 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK 1
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 
-LABEL Author="Judah"
+LABEL Author="Chinedum Roland Eke"
 
-RUN apt-get update && apt-get install -y \
-  build-essential \
-  libpq-dev \
-  && rm -rf /var/lib/apt/lists/*
+#add non root user
+RUN adduser --disabled-password --gecos '' starrtix
 
+#create working dir
 WORKDIR /app
 
+#for using postgres 
+# RUN apt-get update && apt-get install -y \
+#   build-essential \
+#   libpq-dev \
+#   && rm -rf /var/lib/apt/lists/*
+
+#update container image, install essentials for mysql, upgrade pip, install gunicorn, and remove cached apt files after install 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    default-libmysqlclient-dev \
+    build-essential \
+    pkg-config \
+    && pip install --upgrade pip \
+    pip install gunicorn \
+    && rm -rf /var/lib/apt/lists/*
+
+#copy requirements file
 COPY requirements.txt .
 
-RUN pip install --upgrade pip \
-  && pip install --no-cache-dir -r requirements.txt
+#install packages in requirements.txt file
+RUN pip install --no-cache-dir -r requirements.txt
 
+#copy files from host to container
 COPY . .
 
+#changer working dir from root to non-root user 
+RUN chown -R starrtix:starrtix /app
 
+#switch user from root to non-root user
+USER starrtix 
+
+#expose container port 
 EXPOSE 8000
 
+#specify run command when a container is being run with this image
 CMD [ "gunicorn", "starrtixbackend.wsgi:application", "--bind", "0.0.0.0:8000"] 
