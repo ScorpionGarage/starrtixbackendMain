@@ -10,6 +10,8 @@ build-dev:
 
 run-dev:
 	@ENV=development docker compose --env-file=./starrtixbackend/.env.development -f docker-compose-dev.yml up --build
+stop-dev:
+	@ENV=development docker compose --env-file=./starrtixbackend/.env.development -f docker-compose-dev.yml down 
 
 build-prod:
 	@docker build -f Dockerfile.prod -t rolandeke/starrtix-api:production .

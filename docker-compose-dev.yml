@@ -7,14 +7,16 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     restart: always
-    container_name: asset-app-${ENV}
+    container_name: starrtix-api-${ENV}
     command: >
       sh -c "python manage.py makemigrations User
              python manage.py makemigrations Event
              python manage.py makemigrations blog
+             python manage.py makemigrations public_events
              python manage.py migrate User 
              python manage.py migrate Event
              python manage.py migrate blog
+             python manage.py migrate public_events
              python manage.py migrate
              python manage.py collectstatic --skip-checks
              python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
@@ -49,6 +51,8 @@ networks:
     name: starrtix-net
     driver: bridge
   mysql-db-network:
+    name: mysql-db-network
     external: true
   kenecare-net:
+    name: kenecare-net
     external: true
