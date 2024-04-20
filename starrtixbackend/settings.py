@@ -2,6 +2,7 @@
 from pathlib import Path
 from datetime import timedelta
 import environ
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -159,3 +160,5 @@ CORS_ALLOWED_ORIGINS = [
 
 MEDIA_ROOT = BASE_DIR/'media'
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
